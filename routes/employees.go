@@ -88,3 +88,23 @@ func UpdateEmployee(c *fiber.Ctx) error {
 	}
 	return c.Status(200).JSON(employee)
 }
+
+func DeleteEmployee(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	var employee models.Employee
+
+	if err != nil {
+		return c.Status(500).JSON(Message{Detail: err.Error()})
+	}
+
+	if err := findEmployee(id, &employee); err != nil {
+		return c.Status(404).JSON(Message{Detail: err.Error()})
+	}
+
+	if err := database.Database.Db.Delete(&employee).Error; err != nil {
+		return c.Status(500).JSON(Message{Detail: err.Error()})
+	}
+
+	return c.Status(200).JSON(Message{Detail: "Successfully Deleted Department"})
+
+}

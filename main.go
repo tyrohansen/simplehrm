@@ -22,6 +22,11 @@ func setupRoutes(app *fiber.App) {
 	app.Delete("/api/departments/:id", routes.DeleteDepartment)
 
 	// employee routes
+	app.Get("/api/employees/", routes.FetchEmployees)
+	app.Post("/api/employees/", routes.CreateEmployee)
+	app.Get("/api/employees/:id", routes.GetEmployeeDetails)
+	app.Put("/api/employees/:id", routes.UpdateEmployee)
+	app.Delete("/api/employees/:id", routes.DeleteEmployee)
 }
 
 func main() {
