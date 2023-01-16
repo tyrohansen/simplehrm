@@ -61,7 +61,7 @@ func UpdateDepartment(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var dept models.Department
 	if err != nil {
-		return c.Status(400).JSON("ID not provided")
+		return c.Status(400).JSON(Message{Detail: "ID not provided"})
 	}
 
 	if err := findDepartment(id, &dept); err != nil {
@@ -84,7 +84,7 @@ func DeleteDepartment(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var dept models.Department
 	if err != nil {
-		return c.Status(400).JSON("ID not provided")
+		return c.Status(400).JSON(Message{Detail: "ID not provided"})
 	}
 
 	if err := findDepartment(id, &dept); err != nil {
@@ -92,8 +92,8 @@ func DeleteDepartment(c *fiber.Ctx) error {
 	}
 
 	if err := database.Database.Db.Delete(&dept).Error; err != nil {
-		return c.Status(500).JSON(err.Error())
+		return c.Status(500).JSON(Message{Detail: err.Error()})
 	}
 
-	return c.Status(200).JSON("Successfully deleted Department")
+	return c.Status(200).JSON(Message{Detail: "Successfully deleted Department"})
 }
