@@ -1,0 +1,28 @@
+/Users/Ksystems/go/bin/air
+
+
+{
+    "name":"Tech Department",
+    "short_name": "IT"
+}
+
+{
+    "first_name":"Yusuf",
+    "last_name": "Opad",
+    "gender":"Male",
+    "department_id":1,
+    "job_title":"IT Manager",
+    "section":"B",
+    "id_no":"23232",
+    "nin":"cm123234",
+    "date_joined":"2009-01-23",
+    "marital_status":"Single",
+    "birth_place":"Tororo",
+    "residence":"Kampala",
+    "date_of_birth":"1986-19-01",
+    "kin_name":"Yusuf",
+    "kin_contact":"078283243",
+    "photo":"",
+    "emergency_contact":"078282323",
+    "comment":"dfdfdfdfdf"
+}

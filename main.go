@@ -2,8 +2,11 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/tyrohansen/simplehrm/database"
 	"github.com/tyrohansen/simplehrm/routes"
 )
@@ -32,7 +35,15 @@ func setupRoutes(app *fiber.App) {
 func main() {
 	database.ConnectDb()
 	app := fiber.New()
+	app.Use(filesystem.New(filesystem.Config{
+		Root:   http.Dir("./web/build"),
+		Browse: true,
+		Index:  "index.html",
+		//NotFoundFile: "404.html",
+		MaxAge: 3600,
+	}))
+	app.Use(cors.New())
 	setupRoutes(app)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":18000"))
 }
