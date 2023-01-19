@@ -77,7 +77,7 @@ func UpdateDepartment(c *fiber.Ctx) error {
 	dept.ShortName = form.ShortName
 	database.Database.Db.Save(&dept)
 
-	return c.Status(200).JSON(&dept)
+	return c.Status(200).JSON(dept)
 }
 
 func DeleteDepartment(c *fiber.Ctx) error {

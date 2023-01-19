@@ -30,6 +30,13 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/api/employees/:id", routes.GetEmployeeDetails)
 	app.Put("/api/employees/:id", routes.UpdateEmployee)
 	app.Delete("/api/employees/:id", routes.DeleteEmployee)
+
+	// leave request routes
+	app.Get("/api/leave_requests/", routes.GetLeaveRequests)
+	app.Post("/api/leave_requests/", routes.CreateLeaveRequest)
+	app.Get("/api/leave_requests/:id", routes.GetLeaveRequestDetails)
+	app.Put("/api/leave_requests/:id", routes.UpdateLeaveRequest)
+	app.Delete("/api/leave_requests/:id", routes.DeleteLeaveRequest)
 }
 
 func main() {
