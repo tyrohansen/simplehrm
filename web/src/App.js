@@ -9,6 +9,7 @@ import PageNotFound from './components/PageNotFound';
 import { Route, Routes } from 'react-router-dom';
 import DepartmentPage from './components/organisation/DepartmentPage';
 import LeaveRequestPage from './components/people/LeaveRequestPage';
+import EmployeeDetailsPage from './components/people/EmployeeDetailsPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Dashboard />}/>
       <Route path="/employees" element={<EmployPage />}/>
+      <Route path="/employees/:id" element={<EmployeeDetailsPage />}/>
       <Route path="/departments" element={<DepartmentPage />}/>
       <Route path="/leave" element={<LeaveRequestPage />}/>
       <Route path="/login" element={<LoginScreen />}/>

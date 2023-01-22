@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os/exec"
+	"runtime"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -32,11 +35,13 @@ func setupRoutes(app *fiber.App) {
 	app.Delete("/api/employees/:id", routes.DeleteEmployee)
 
 	// leave request routes
-	app.Get("/api/leave_requests/", routes.GetLeaveRequests)
-	app.Post("/api/leave_requests/", routes.CreateLeaveRequest)
-	app.Get("/api/leave_requests/:id", routes.GetLeaveRequestDetails)
-	app.Put("/api/leave_requests/:id", routes.UpdateLeaveRequest)
-	app.Delete("/api/leave_requests/:id", routes.DeleteLeaveRequest)
+	app.Get("/api/leave_requests/", routes.HandleGetLeaveRequests)
+	app.Post("/api/leave_requests/", routes.HandleCreateLeaveRequest)
+	app.Get("/api/leave_requests/employee/:id", routes.HandleGetEmployeeLeaveRequests)
+	app.Get("/api/leave_requests/:id", routes.HandleGetLeaveRequestDetails)
+	app.Put("/api/leave_requests/:id", routes.HandleUpdateLeaveRequest)
+	app.Delete("/api/leave_requests/:id", routes.HandleDeleteLeaveRequest)
+
 }
 
 func main() {
@@ -51,6 +56,24 @@ func main() {
 	}))
 	app.Use(cors.New())
 	setupRoutes(app)
-
+	openbrowser("http://localhost:18000/")
 	log.Fatal(app.Listen(":18000"))
+
+}
+
+func openbrowser(url string) {
+	var err error
+	switch runtime.GOOS {
+	case "linux":
+		err = exec.Command("xdg-open", url).Start()
+	case "windows":
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		err = exec.Command("open", url).Start()
+	default:
+		err = fmt.Errorf("unsupported platform")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
 }

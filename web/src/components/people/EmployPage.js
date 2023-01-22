@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Col,Row, Table } from 'react-bootstrap';
 import EmployeeForm from './EmployeeForm';
 import { fetchEmployees } from '../../services/employee-service';
@@ -60,7 +60,7 @@ function EmployPage() {
                 {employees.map((item, i) => (
                   <tr key={i}>
                   <td>{item.ID}</td>
-                  <td>{item.first_name} {item.last_name}</td>
+                  <td><Link to={`/employees/` + item.ID}>{item.first_name} {item.last_name}</Link></td>
                   <td>{item.gender}</td>
                   <td>{item.department_id}</td>
                   <td>{item.job_title}</td>

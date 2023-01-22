@@ -2,6 +2,7 @@ package routes
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -19,7 +20,7 @@ type LeaveRequest struct {
 	Comment       string    `json:"comment"`
 }
 
-func CreateLeaveRequest(c *fiber.Ctx) error {
+func HandleCreateLeaveRequest(c *fiber.Ctx) error {
 	var request models.LeaveRequest
 
 	if err := c.BodyParser(&request); err != nil {
@@ -29,9 +30,21 @@ func CreateLeaveRequest(c *fiber.Ctx) error {
 	return c.Status(200).JSON(request)
 }
 
-func GetLeaveRequests(c *fiber.Ctx) error {
+func HandleGetLeaveRequests(c *fiber.Ctx) error {
 	items := []models.LeaveRequest{}
 	database.Database.Db.Find(&items)
+	return c.Status(200).JSON(items)
+}
+
+func HandleGetEmployeeLeaveRequests(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		log.Panic(err.Error())
+		return c.Status(400).JSON(Message{Detail: "No Employee id provided!"})
+	}
+	items := []models.LeaveRequest{}
+	database.Database.Db.Where("employee_refer= ?", id).Find(&items)
 	return c.Status(200).JSON(items)
 }
 
@@ -43,7 +56,7 @@ func findLeaveById(id int, item *models.LeaveRequest) error {
 	return nil
 }
 
-func GetLeaveRequestDetails(c *fiber.Ctx) error {
+func HandleGetLeaveRequestDetails(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var item models.LeaveRequest
 
@@ -58,7 +71,7 @@ func GetLeaveRequestDetails(c *fiber.Ctx) error {
 	return c.Status(200).JSON(item)
 }
 
-func UpdateLeaveRequest(c *fiber.Ctx) error {
+func HandleUpdateLeaveRequest(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
 		return c.Status(400).JSON(Message{Detail: "Id not provided"})
@@ -78,7 +91,7 @@ func UpdateLeaveRequest(c *fiber.Ctx) error {
 	return c.Status(200).JSON(item)
 }
 
-func DeleteLeaveRequest(c *fiber.Ctx) error {
+func HandleDeleteLeaveRequest(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
 		return c.Status(400).JSON(Message{Detail: "Id not provided"})

@@ -18,4 +18,4 @@ export async function fetchEmployeeById(id) {
 export async function deleteEmployeeById(id) {
     const response = await axiosAPI.delete(`employees/${id}/`);
     return response;
-  }
+}
