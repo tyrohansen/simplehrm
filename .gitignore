@@ -9,9 +9,6 @@ web/.pnp
 # testing
 /coverage
 
-# production
-web/build
-
 # misc
 .DS_Store
 .env.local
