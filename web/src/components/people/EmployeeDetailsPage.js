@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Row, Tab, Table, Tabs } from 'react-bootstrap';
+import { Button, Card, Col, Image, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import { fetchEmployeeById } from '../../services/employee-service';
 import { fetchEmployeeLeaveRequests } from '../../services/leave-service';
 import LeaveForm from './LeaveForm';
+import PhotoForm from './PhotoForm';
 
 
 function EmployeeDetailsPage() {
@@ -11,6 +12,7 @@ function EmployeeDetailsPage() {
   const [employee, setEmployee] = useState({});
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [showLeaveRequestForm, setShowLeaveRequestForm] = useState(false);
+  const [showPhotoEditForm, setShowPhotoEditForm] = useState(false);
 
   useEffect(() => {
     getEmployeeDetails(id);
@@ -36,10 +38,22 @@ function EmployeeDetailsPage() {
   return (
     <div><h3> Employee Profile</h3>
         {employee && <Row>
-          <Col md={2}>
-            Photo goes here
+          <Col md={3}>
+          <Card>
+				{employee.photo && <Image
+											fluid
+											src={employee.photo}
+										></Image>}
+					<Card.Body>
+						<Button onClick={()=>setShowPhotoEditForm(true)}>
+							 Change Photo
+						</Button>
+						{showPhotoEditForm && <PhotoForm employee={employee.ID}   show={showPhotoEditForm} onHide={()=>setShowPhotoEditForm(false)} />}
+						
+					</Card.Body>
+				</Card>
           </Col>
-          <Col md={10}>
+          <Col md={9}>
             <Row className='gy-5'>
               <Col md={8} className="offset-md-4 text-center">
                 <Button>Edit</Button>&nbsp;&nbsp;

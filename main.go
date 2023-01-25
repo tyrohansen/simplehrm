@@ -28,11 +28,12 @@ func setupRoutes(app *fiber.App) {
 	app.Delete("/api/departments/:id", routes.DeleteDepartment)
 
 	// employee routes
-	app.Get("/api/employees/", routes.FetchEmployees)
-	app.Post("/api/employees/", routes.CreateEmployee)
-	app.Get("/api/employees/:id", routes.GetEmployeeDetails)
-	app.Put("/api/employees/:id", routes.UpdateEmployee)
-	app.Delete("/api/employees/:id", routes.DeleteEmployee)
+	app.Get("/api/employees/", routes.HandleFetchEmployees)
+	app.Post("/api/employees/", routes.HandleCreateEmployee)
+	app.Get("/api/employees/:id", routes.HandleGetEmployeeDetails)
+	app.Put("/api/employees/:id", routes.HandleUpdateEmployee)
+	app.Delete("/api/employees/:id", routes.HandleDeleteEmployee)
+	app.Post("/api/employees/:id", routes.HandleUploadEmployeePicture)
 
 	// leave request routes
 	app.Get("/api/leave_requests/", routes.HandleGetLeaveRequests)
@@ -46,7 +47,13 @@ func setupRoutes(app *fiber.App) {
 
 func main() {
 	database.ConnectDb()
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		Prefork:       true,
+		CaseSensitive: true,
+		StrictRouting: true,
+		ServerHeader:  "Simple HRM",
+		AppName:       "Hotel Africana HRM v1.0.1",
+	})
 	app.Use(filesystem.New(filesystem.Config{
 		Root:   http.Dir("./web/build"),
 		Browse: true,

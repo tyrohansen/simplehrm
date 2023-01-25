@@ -15,6 +15,11 @@ export async function fetchEmployeeById(id) {
   return response;
 }
 
+export async function uploadEmployeePhoto(id, data) {
+  const response = await axiosAPI.post(`employees/${id}`, data);
+  return response;
+}
+
 export async function deleteEmployeeById(id) {
     const response = await axiosAPI.delete(`employees/${id}/`);
     return response;

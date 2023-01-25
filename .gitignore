@@ -9,6 +9,8 @@ web/.pnp
 # testing
 /coverage
 
+# web items
+web/photos
 # misc
 .DS_Store
 .env.local

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/tyrohansen/simplehrm/database"
@@ -30,7 +31,7 @@ type Employee struct {
 	Comment         string `json:"comment" gorm:"type:text"`
 }
 
-func CreateEmployee(c *fiber.Ctx) error {
+func HandleCreateEmployee(c *fiber.Ctx) error {
 	var employee models.Employee
 
 	if err := c.BodyParser(&employee); err != nil {
@@ -41,7 +42,7 @@ func CreateEmployee(c *fiber.Ctx) error {
 	return c.Status(200).JSON(employee)
 }
 
-func FetchEmployees(c *fiber.Ctx) error {
+func HandleFetchEmployees(c *fiber.Ctx) error {
 	employees := []models.Employee{}
 	database.Database.Db.Find(&employees)
 	return c.Status(200).JSON(&employees)
@@ -55,7 +56,7 @@ func findEmployee(id int, emp *models.Employee) error {
 	return nil
 }
 
-func GetEmployeeDetails(c *fiber.Ctx) error {
+func HandleGetEmployeeDetails(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var employee models.Employee
 
@@ -71,7 +72,7 @@ func GetEmployeeDetails(c *fiber.Ctx) error {
 
 }
 
-func UpdateEmployee(c *fiber.Ctx) error {
+func HandleUpdateEmployee(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var employee models.Employee
 
@@ -89,7 +90,7 @@ func UpdateEmployee(c *fiber.Ctx) error {
 	return c.Status(200).JSON(employee)
 }
 
-func DeleteEmployee(c *fiber.Ctx) error {
+func HandleDeleteEmployee(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	var employee models.Employee
 
@@ -104,6 +105,30 @@ func DeleteEmployee(c *fiber.Ctx) error {
 	if err := database.Database.Db.Delete(&employee).Error; err != nil {
 		return c.Status(500).JSON(Message{Detail: err.Error()})
 	}
+
+	return c.Status(200).JSON(Message{Detail: "Successfully Deleted Department"})
+
+}
+
+func HandleUploadEmployeePicture(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	var employee models.Employee
+
+	if err != nil {
+		return c.Status(500).JSON(Message{Detail: err.Error()})
+	}
+
+	file, err := c.FormFile("photo")
+	if err != nil {
+		return c.Status(422).JSON(Message{Detail: "We were not able upload your attachment"})
+	}
+
+	if err := findEmployee(id, &employee); err != nil {
+		return c.Status(404).JSON(Message{Detail: err.Error()})
+	}
+
+	c.SaveFile(file, fmt.Sprintf("./web/build/photos/%s", file.Filename))
+	database.Database.Db.Model(&employee).Update("photo", file.Filename)
 
 	return c.Status(200).JSON(Message{Detail: "Successfully Deleted Department"})
 
