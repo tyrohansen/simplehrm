@@ -35,10 +35,10 @@ function EmployPage() {
 
   return (
     <div>
-      <h3>Employees</h3>
+      <h3>Staff List</h3>
       <Row className='my-3'>
         <Col md={12}>
-          <Button variant='primary' onClick={() => setShowEmployeeForm(true)}>Add Employee</Button>
+          <Button variant='primary' onClick={() => setShowEmployeeForm(true)}>Add Member</Button>
           {showEmployeeForm && <EmployeeForm show={showEmployeeForm}  onHide={() => setShowEmployeeForm(false)} onSuccess={onEmployeeFormSuccess} />}
         </Col>
       </Row>

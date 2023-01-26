@@ -20,7 +20,7 @@ function TwoGridLayout({ children, }) {
             <Link className="nav-link" to="/employees">
              
               <FeatherIcon icon="users" className="align-text-bottom" />
-              Employees
+              People
             </Link>
           </li>
           <li className="nav-item">
@@ -35,18 +35,8 @@ function TwoGridLayout({ children, }) {
               Leave
             </Link>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              <FeatherIcon icon="bar-chart-2" className="align-text-bottom" />
-              Reports
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              <FeatherIcon icon="layers" className="align-text-bottom" />
-              Integrations
-            </a>
-          </li>
+         
+         
         </ul>
 
         <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
@@ -67,19 +57,7 @@ function TwoGridLayout({ children, }) {
               <FeatherIcon icon="file-text" className="align-text-bottom" />
               Last quarter
             </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              <FeatherIcon icon="file-text" className="align-text-bottom" />
-              Social engagement
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">
-              <FeatherIcon icon="file-text" className="align-text-bottom" />
-              Year-end sale
-            </a>
-          </li>
+          </li> 
         </ul>
       </div>
     </nav>

@@ -32,7 +32,7 @@ func HandleCreateLeaveRequest(c *fiber.Ctx) error {
 
 func HandleGetLeaveRequests(c *fiber.Ctx) error {
 	items := []models.LeaveRequest{}
-	database.Database.Db.Find(&items)
+	database.Database.Db.Order("enddate desc").Find(&items)
 	return c.Status(200).JSON(items)
 }
 

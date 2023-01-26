@@ -50,7 +50,7 @@ function EmployeeDetailsPage() {
 
   }
   return (
-    <div><h3> Employee Profile</h3>
+    <div><h3> Staff Profile</h3>
         {employee && <Row>
           <Col md={3}>
           <Card>
