@@ -58,7 +58,7 @@ func main() {
 		Root:   http.Dir("./web/build"),
 		Browse: true,
 		Index:  "index.html",
-		//NotFoundFile: "404.html",
+		// NotFoundFile: "index.html",
 		MaxAge: 3600,
 	}))
 	app.Use(cors.New())

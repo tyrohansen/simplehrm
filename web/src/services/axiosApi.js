@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = 'http://127.0.0.1:18000/api/';
+export const url = 'http://127.0.0.1:18000/';
 
 const accessToken = localStorage.getItem("access_token");
 
@@ -78,4 +79,9 @@ export function setNewHeaders(response) {
 export function setProfileHeaders(response) {
   localStorage.setItem("profile", JSON.stringify(response.data.profile));
 }
+
+export const getBaseUrl = () => {
+  return baseURL;
+}
 export default axiosAPI;
+

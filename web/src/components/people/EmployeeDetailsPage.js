@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Image, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import { fetchEmployeeById } from '../../services/employee-service';
+import {getBaseUrl, url} from "../../services/axiosApi";
 import { fetchEmployeeLeaveRequests } from '../../services/leave-service';
 import LeaveForm from './LeaveForm';
 import PhotoForm from './PhotoForm';
@@ -42,7 +43,7 @@ function EmployeeDetailsPage() {
           <Card>
 				{employee.photo && <Image
 											fluid
-											src={employee.photo}
+											src={url + `photos/` + employee.photo}
 										></Image>}
 					<Card.Body>
 						<Button onClick={()=>setShowPhotoEditForm(true)}>
@@ -66,7 +67,7 @@ function EmployeeDetailsPage() {
               <Card.Body>
               
               <Row>
-                <Col md={4}>
+                <Col md={6}>
                   <Table>
                       <tbody>
                         <tr>
@@ -88,7 +89,7 @@ function EmployeeDetailsPage() {
                       </tbody>
                   </Table>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                 <Table>
                       <tbody>
                         <tr>
@@ -118,7 +119,7 @@ function EmployeeDetailsPage() {
                       </tbody>
                   </Table>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                 <Table>
                       <tbody>
                         <tr>

@@ -7,7 +7,7 @@ import { fetchEmployees } from '../../services/employee-service';
 function EmployPage() {
   const [employees, setEmployees] = useState([]);
   const [showEmployeeForm, setShowEmployeeForm] = useState(false);
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() =>{
     getEmployeeList();
@@ -30,6 +30,7 @@ function EmployPage() {
   const onEmployeeFormSuccess = () => {
     getEmployeeList();
     setShowEmployeeForm(false);
+    
   }
 
   return (

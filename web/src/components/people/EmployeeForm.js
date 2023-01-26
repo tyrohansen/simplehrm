@@ -10,7 +10,7 @@ function EmployeeForm(props) {
         first_name: "",
         last_name: "",
         gender:"",
-        department: 0,
+        department_id: 0,
         job_title:"",
         section:"",
         id_no:"",
@@ -166,10 +166,10 @@ function EmployeeForm(props) {
               <Col md="6">
                 <Form.Group
                   className="mb-1"
-                  controlId="empForm.section"
+                  controlId="empForm.department"
                 >
                   <Form.Label>Department</Form.Label>
-                  <Form.Select aria-label="Default select department" name="department" value={formData.department} onChange={(e) => handleChangeInteger(e)}>
+                  <Form.Select aria-label="Default select department" name="department_id" value={formData.department_id} onChange={(e) => handleChangeInteger(e)}>
                       <option>--------</option>
                       {departments.map((item, i) => (
                           <option value={item.ID} key={i}>{item.name}</option>

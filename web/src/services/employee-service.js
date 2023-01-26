@@ -1,4 +1,5 @@
-import axiosAPI from "./axiosApi";
+import axios from "axios";
+import axiosAPI, {getBaseUrl} from "./axiosApi";
 
 export async function createEmployee(payload) {
     const response = await axiosAPI.post("employees/", payload);
@@ -16,7 +17,7 @@ export async function fetchEmployeeById(id) {
 }
 
 export async function uploadEmployeePhoto(id, data) {
-  const response = await axiosAPI.post(`employees/${id}`, data);
+  const response = await axios.post(getBaseUrl() + `employees/${id}`, data);
   return response;
 }
 
