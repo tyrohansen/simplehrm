@@ -73,11 +73,8 @@ func UpdateDepartment(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	dept.Name = form.Name
-	dept.ShortName = form.ShortName
-	database.Database.Db.Save(&dept)
-
-	return c.Status(200).JSON(dept)
+	database.Database.Db.Where("id = ?", id).Updates(&form)
+	return c.Status(200).JSON(form)
 }
 
 func DeleteDepartment(c *fiber.Ctx) error {

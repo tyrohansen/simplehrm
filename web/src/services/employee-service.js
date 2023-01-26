@@ -16,8 +16,13 @@ export async function fetchEmployeeById(id) {
   return response;
 }
 
+export async function updateEmployeeById(id, data) {
+  const response = await axiosAPI.put(`employees/${id}`, data);
+  return response;
+}
+
 export async function uploadEmployeePhoto(id, data) {
-  const response = await axios.post(getBaseUrl() + `employees/${id}`, data);
+  const response = await axios.post(getBaseUrl() + `employees/${id}/photo`, data);
   return response;
 }
 

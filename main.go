@@ -33,7 +33,7 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/api/employees/:id", routes.HandleGetEmployeeDetails)
 	app.Put("/api/employees/:id", routes.HandleUpdateEmployee)
 	app.Delete("/api/employees/:id", routes.HandleDeleteEmployee)
-	app.Post("/api/employees/:id", routes.HandleUploadEmployeePicture)
+	app.Post("/api/employees/:id/photo", routes.HandleUploadEmployeePicture)
 
 	// leave request routes
 	app.Get("/api/leave_requests/", routes.HandleGetLeaveRequests)

@@ -87,7 +87,9 @@ func HandleUpdateEmployee(c *fiber.Ctx) error {
 	if err := c.BodyParser(&form); err != nil {
 		return c.Status(400).JSON(Message{Detail: err.Error()})
 	}
-	return c.Status(200).JSON(employee)
+
+	database.Database.Db.Where("id = ?", id).Updates(&form)
+	return c.Status(200).JSON(form)
 }
 
 func HandleDeleteEmployee(c *fiber.Ctx) error {

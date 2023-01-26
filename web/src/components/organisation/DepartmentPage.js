@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { fetchDepartments } from '../../services/departments-service';
+import DepartmentEditForm from './DepartmentEditForm';
 import DepartmentForm from './DepartmentForm';
 
 function DepartmentPage() {
   const [departments, setDepartments] = useState([]);
   const [showDepartmentForm, setShowDepartmentForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selected, setSelected] = useState(0);
 
 
   useEffect(() => {
@@ -28,6 +31,16 @@ function DepartmentPage() {
     getAllDepartments();
   }
 
+  const handleCloseEditForm = () => {
+      getAllDepartments();
+      setShowEditForm(false);
+  }
+
+  const editDepartment = (id) => {
+    setSelected(id);
+    setShowEditForm(true)
+  }
+
   return (
     <div>
       <h1>Departments</h1>
@@ -40,10 +53,11 @@ function DepartmentPage() {
         <Table>
         <thead>
           <tr>
-            <td>id</td>
-            <td>Name</td>
-            <td>ShortName</td>
-            <td>Date</td>
+            <th>id</th>
+            <th>Name</th>
+            <th>ShortName</th>
+            <th>Date</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -53,12 +67,13 @@ function DepartmentPage() {
             <td>{item.name}</td>
             <td>{item.short_name}</td>
             <td>{item.CreatedAt}</td>
+            <td><Button onClick={() => editDepartment(item.ID)}>Edit</Button></td>
           </tr>))}
         </tbody>
       </Table>
         </Col>
       </Row>
-     
+      {showEditForm && <DepartmentEditForm departmentId={selected}  show={showEditForm} onHide={() => setShowEditForm(false)} onSuccess={handleCloseEditForm} />}
     </div>
   )
 }

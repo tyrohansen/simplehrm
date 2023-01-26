@@ -15,6 +15,11 @@ export async function fetchDepartmentById(id) {
   return response;
 }
 
+export async function updateDepartmentById(id, params) {
+  const response = await axiosAPI.put(`departments/${id}`, params);
+  return response;
+}
+
 export async function deleteDepartmentById(id) {
     const response = await axiosAPI.delete(`departments/${id}/`);
     return response;

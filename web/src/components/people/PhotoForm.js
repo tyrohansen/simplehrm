@@ -16,7 +16,7 @@ function PhotoForm(props) {
         item.append("photo", memberPhoto);
 
         await uploadEmployeePhoto(employee, item).then(response => {
-            props.onHide();
+            props.onSuccess();
         }).catch(error => {
 
         });

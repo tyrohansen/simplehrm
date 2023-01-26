@@ -6,6 +6,7 @@ import {getBaseUrl, url} from "../../services/axiosApi";
 import { fetchEmployeeLeaveRequests } from '../../services/leave-service';
 import LeaveForm from './LeaveForm';
 import PhotoForm from './PhotoForm';
+import EmployeeEditForm from './EmployeeEditForm';
 
 
 function EmployeeDetailsPage() {
@@ -14,6 +15,7 @@ function EmployeeDetailsPage() {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [showLeaveRequestForm, setShowLeaveRequestForm] = useState(false);
   const [showPhotoEditForm, setShowPhotoEditForm] = useState(false);
+  const [showEmployeeEditForm, setShowEmployeeEditForm] = useState(false);
 
   useEffect(() => {
     getEmployeeDetails(id);
@@ -36,6 +38,17 @@ function EmployeeDetailsPage() {
         alert("An error Occurred!")
       })
   }
+
+  const onPhotoChangeSuccess = () => {
+    setShowPhotoEditForm(false);
+    getEmployeeDetails(id);
+  }
+
+  const onEmployeeEditSuccess = () => {
+    getEmployeeDetails(id);
+    setShowEmployeeEditForm(false);
+
+  }
   return (
     <div><h3> Employee Profile</h3>
         {employee && <Row>
@@ -49,7 +62,7 @@ function EmployeeDetailsPage() {
 						<Button onClick={()=>setShowPhotoEditForm(true)}>
 							 Change Photo
 						</Button>
-						{showPhotoEditForm && <PhotoForm employee={employee.ID}   show={showPhotoEditForm} onHide={()=>setShowPhotoEditForm(false)} />}
+						{showPhotoEditForm && <PhotoForm employee={employee.ID}   show={showPhotoEditForm} onHide={()=>setShowPhotoEditForm(false)} onSuccess={onPhotoChangeSuccess} />}
 						
 					</Card.Body>
 				</Card>
@@ -57,7 +70,7 @@ function EmployeeDetailsPage() {
           <Col md={9}>
             <Row className='gy-5'>
               <Col md={8} className="offset-md-4 text-center">
-                <Button>Edit</Button>&nbsp;&nbsp;
+                <Button onClick={() => setShowEmployeeEditForm(true)}>Edit</Button>&nbsp;&nbsp;
                 <Button variant='success' onClick={() => setShowLeaveRequestForm(true)}>New Leave Request</Button>&nbsp;&nbsp;
                 <Button variant='success'>New Document</Button>&nbsp;&nbsp;
                 <Button variant='danger'>Delete</Button>&nbsp;&nbsp;
@@ -201,6 +214,7 @@ function EmployeeDetailsPage() {
         
         </Row>}
         {showLeaveRequestForm && <LeaveForm employee={id} show={showLeaveRequestForm} onHide={() => setShowLeaveRequestForm(false)} />}
+        {showEmployeeEditForm && <EmployeeEditForm employeeId={id} show={showEmployeeEditForm} onHide={() => setShowEmployeeEditForm(false)} onSuccess={onEmployeeEditSuccess} />}
     </div>
   )
 }
