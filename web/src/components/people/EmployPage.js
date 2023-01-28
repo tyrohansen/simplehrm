@@ -51,9 +51,10 @@ function EmployPage() {
                   <th>Name</th>
                   <th>Gender</th>
                   <th>Department</th>
-
                   <th>Position</th>
                   <th>Phone</th>
+                  <th>Joined</th>
+                  <th>Last Update</th>
                 </tr>
               </thead>
               <tbody>
@@ -63,10 +64,11 @@ function EmployPage() {
                   <td>{item.ID}</td>
                   <td><Link to={`/employees/` + item.ID}>{item.first_name} {item.last_name}</Link></td>
                   <td>{item.gender}</td>
-                  <td>{item.department_id}</td>
+                  <td>{item.Department.short_name}</td>
                   <td>{item.job_title}</td>
                   <td>{item.emergency_contact}</td>
-                  <td></td>
+                  <td>{item.date_joined}</td>
+                  <td>{item.UpdatedAt}</td>
                 </tr>
                 ))}
                 

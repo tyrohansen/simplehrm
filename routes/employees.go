@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/tyrohansen/simplehrm/database"
 	"github.com/tyrohansen/simplehrm/models"
+	"gorm.io/gorm/clause"
 )
 
 type Employee struct {
@@ -44,7 +45,7 @@ func HandleCreateEmployee(c *fiber.Ctx) error {
 
 func HandleFetchEmployees(c *fiber.Ctx) error {
 	employees := []models.Employee{}
-	database.Database.Db.Find(&employees)
+	database.Database.Db.Preload(clause.Associations).Find(&employees)
 	return c.Status(200).JSON(&employees)
 }
 

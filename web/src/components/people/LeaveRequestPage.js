@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Table } from 'react-bootstrap';
+import {Table } from 'react-bootstrap';
 import { fetchLeaveRequests } from '../../services/leave-service';
 
 function LeaveRequestPage() {
@@ -36,7 +36,7 @@ function LeaveRequestPage() {
                   {leaveRequests && leaveRequests.map((item, i) => (
                     <tr key={`leave-${i}`}>
                     <td>{i + 1}</td>
-                    <th>{item.employee}</th>
+                    <th>{item.Employee.first_name} {item.Employee.last_name}</th>
                     <td>{item.start_date.substring(0, 10)}</td>
                     <td>{item.end_date.substring(0, 10)}</td>
                     <td>{item.work_days}</td>
