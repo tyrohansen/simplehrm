@@ -43,6 +43,14 @@ func setupRoutes(app *fiber.App) {
 	app.Put("/api/leave_requests/:id", routes.HandleUpdateLeaveRequest)
 	app.Delete("/api/leave_requests/:id", routes.HandleDeleteLeaveRequest)
 
+	// handle document routes
+
+	app.Get("/api/documents/", routes.HandleFetchDocuments)
+	app.Post("/api/documents/", routes.HandleCreateDocument)
+	app.Get("/api/documents/employee/:id", routes.HandleFetchEmployeeDocuments)
+	app.Get("/api/documents/:id", routes.HandleFetchDocumentDetails)
+	app.Delete("/api/documents/:id", routes.HandleDeleteDocument)
+
 }
 
 func main() {
