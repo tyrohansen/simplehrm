@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Col,Row, Table } from 'react-bootstrap';
 import EmployeeForm from './EmployeeForm';
 import { fetchEmployees } from '../../services/employee-service';
+import AlertContext from '../widgets/alertPopup/AlertContext';
 
 function EmployPage() {
+  let {setAlert} = useContext(AlertContext);
   const [employees, setEmployees] = useState([]);
   const [showEmployeeForm, setShowEmployeeForm] = useState(false);
   const navigate = useNavigate()
@@ -27,9 +29,10 @@ function EmployPage() {
       
   }
 
-  const onEmployeeFormSuccess = () => {
+  const onEmployeeFormSuccess = (message) => {
     getEmployeeList();
     setShowEmployeeForm(false);
+    setAlert(message, "success")
     
   }
 

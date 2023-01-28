@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { createDepartment } from '../../services/departments-service';
+import AlertContext from '../widgets/alertPopup/AlertContext';
 
 function DepartmentForm(props) {
+  let {setAlert} = useContext(AlertContext)
     const [validated, setValidated] = useState();
     const [formData, setFormData] = useState({
         name:"",
@@ -18,11 +20,15 @@ function DepartmentForm(props) {
         console.log(formData)
         await createDepartment(formData).then(
           response => {
-            console.log("Create department!");
+            setAlert("Department Created successfully", "success")
+            setFormData({
+              name:"",
+              short_name:""
+          })
             props.onSuccess();
           }
         ).catch(error => {
-           console.log("An error occurred")
+          setAlert("An error occurred", "danger")
         });
         
       };

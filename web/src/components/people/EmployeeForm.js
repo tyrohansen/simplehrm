@@ -49,7 +49,7 @@ function EmployeeForm(props) {
     event.preventDefault();
     console.log(formData)
     const items = await createEmployee(formData).then(response => {
-        props.onSuccess();
+        props.onSuccess(response.data.first_name + " " + response.data.last_name  + " added Successfully");
     }).catch(error => {
         console.log("An error occurred!")
     });
@@ -105,20 +105,12 @@ function EmployeeForm(props) {
                 >
                   <Form.Label>Gender</Form.Label>
                   <br/>
-                  <Form.Check
-                    inline
-                    label="Male"
-                    name="group1"
-                    type='radio'
-                    id={`inline-radio-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Female"
-                    name="group1"
-                    type='radio'
-                    id={`inline-radio-1`}
-                  />
+                  <Form.Select aria-label="Default select gender" name="gender" value={formData.gender} onChange={(e) => handleChange(e)}>
+                      <option>--------</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </Form.Select>
+                  
                 </Form.Group>
               </Col>
 
@@ -229,7 +221,7 @@ function EmployeeForm(props) {
                   controlId="empForm.place_of_origin"
                 >
                   <Form.Label>Place of origin</Form.Label>
-                  <Form.Control name="place_of_origin" type="text" placeholder="John" value={formData.place_of_origin} onChange={(e) => handleChange(e)}/>
+                  <Form.Control name="place_of_origin" type="text" placeholder="Kampala" value={formData.place_of_origin} onChange={(e) => handleChange(e)}/>
                   
                 </Form.Group>
               </Col>

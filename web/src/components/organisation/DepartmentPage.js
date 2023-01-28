@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { fetchDepartments } from '../../services/departments-service';
+import AlertContext from '../widgets/alertPopup/AlertContext';
 import DepartmentEditForm from './DepartmentEditForm';
 import DepartmentForm from './DepartmentForm';
 
 function DepartmentPage() {
+  let {setAlert} = useContext(AlertContext)
   const [departments, setDepartments] = useState([]);
   const [showDepartmentForm, setShowDepartmentForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -18,10 +20,11 @@ function DepartmentPage() {
   const getAllDepartments = async () => {
       await fetchDepartments().then(
         response => {
-          setDepartments(response.data)
+          setDepartments(response.data);
+          
         }
       ).catch(error => {
-        console.log("An error occurred!")
+        setAlert("An error occurred loading departments","danger");
       })
       
    }
@@ -29,11 +32,14 @@ function DepartmentPage() {
   const closeAndRefreshForm = () => {
     setShowDepartmentForm(false);
     getAllDepartments();
+    setAlert("Department Created successfully", "success")
   }
 
   const handleCloseEditForm = () => {
       getAllDepartments();
       setShowEditForm(false);
+      setAlert("Department Updated successfully", "success")
+      
   }
 
   const editDepartment = (id) => {

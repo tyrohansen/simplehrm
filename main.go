@@ -63,7 +63,7 @@ func main() {
 		AppName:       "Hotel Africana HRM v1.0.1",
 	})
 	app.Use(filesystem.New(filesystem.Config{
-		Root:   http.Dir("./web/build"),
+		Root:   http.Dir("./dashboard"),
 		Browse: true,
 		Index:  "index.html",
 		// NotFoundFile: "index.html",

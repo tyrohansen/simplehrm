@@ -10,9 +10,11 @@ import { Route, Routes } from 'react-router-dom';
 import DepartmentPage from './components/organisation/DepartmentPage';
 import LeaveRequestPage from './components/people/LeaveRequestPage';
 import EmployeeDetailsPage from './components/people/EmployeeDetailsPage';
+import AlertPopup from './components/widgets/alertPopup/AlertPopup';
 
 function App() {
   return (
+    <>
     <div className="App">
       <TwoGridLayout>
       <Routes>
@@ -25,9 +27,11 @@ function App() {
       <Route path="*" element={<PageNotFound />}/>
 
       </Routes>
+      
       </TwoGridLayout>
       
-    </div>
+    </div><AlertPopup/>
+    </>
   );
 }
 

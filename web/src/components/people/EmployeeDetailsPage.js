@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Image, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import { fetchEmployeeById } from '../../services/employee-service';
@@ -7,10 +7,12 @@ import { fetchEmployeeLeaveRequests } from '../../services/leave-service';
 import LeaveForm from './LeaveForm';
 import PhotoForm from './PhotoForm';
 import EmployeeEditForm from './EmployeeEditForm';
+import AlertContext from '../widgets/alertPopup/AlertContext';
 
 
 function EmployeeDetailsPage() {
   const {id} = useParams();
+  let {setAlert} = useContext(AlertContext);
   const [employee, setEmployee] = useState({});
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [showLeaveRequestForm, setShowLeaveRequestForm] = useState(false);
@@ -19,7 +21,7 @@ function EmployeeDetailsPage() {
 
   useEffect(() => {
     getEmployeeDetails(id);
-    getEmployeeLeaveRequests(id);
+    
     getEmployeeLeaveRequests(id);
   },[id]);
 
@@ -27,7 +29,7 @@ function EmployeeDetailsPage() {
      await fetchEmployeeById(id).then(response => {
         setEmployee(response.data)
       }).catch(error => {
-       
+        setAlert("An Error occurred fetching staff details", "danger")
      })
   }
 
@@ -35,19 +37,27 @@ function EmployeeDetailsPage() {
       await fetchEmployeeLeaveRequests(id).then(response => {
         setLeaveRequests(response.data);
       }).catch(error => {
-        alert("An error Occurred!")
+        setAlert("An error Occurred!", "danger")
       })
   }
 
   const onPhotoChangeSuccess = () => {
     setShowPhotoEditForm(false);
     getEmployeeDetails(id);
+    setAlert("Uploaded photo successfully", "success")
   }
 
-  const onEmployeeEditSuccess = () => {
+  const onEmployeeEditSuccess = (message) => {
     getEmployeeDetails(id);
     setShowEmployeeEditForm(false);
+    setAlert(message, "success")
 
+  }
+
+  const onLeaveRequestSuccess = () => {
+     getEmployeeLeaveRequests(id);
+     setShowLeaveRequestForm(false);
+     setAlert("Leave request recorded successfully")
   }
   return (
     <div><h3> Staff Profile</h3>
@@ -97,7 +107,15 @@ function EmployeeDetailsPage() {
                         </tr>
                         <tr>
                         <th>Gender</th>
-                        <td>{employee.date_of_birth}</td>
+                        <td>{employee.gender}</td>
+                        </tr>
+                        <tr>
+                        <th>Created</th>
+                        <td>{employee.CreatedAt}</td>
+                        </tr>
+                        <tr>
+                        <th>Last Updated</th>
+                        <td>{employee.UpdatedAt}</td>
                         </tr>
                       </tbody>
                   </Table>
@@ -111,7 +129,7 @@ function EmployeeDetailsPage() {
                         </tr>
                         <tr>
                         <th>Department</th>
-                        <td>{employee.department_id}</td>
+                        <td>{employee && employee.department_id}</td>
                         </tr>
                         <tr>
                         <th>Section</th>
@@ -132,32 +150,7 @@ function EmployeeDetailsPage() {
                       </tbody>
                   </Table>
                 </Col>
-                <Col md={6}>
-                <Table>
-                      <tbody>
-                        <tr>
-                        <th>Place of Origin</th>
-                        <td>{employee.birth_place}</td>
-                        </tr>
-                        <tr>
-                        <th>Residence</th>
-                        <td>{employee.residence}</td>
-                        </tr>
-                        <tr>
-                        <th>Next of Kin Name</th>
-                        <td>{employee.kin_name}</td>
-                        </tr>
-                        <tr>
-                        <th>Next of Kin Contact</th>
-                        <td>{employee.kin_contact}</td>
-                        </tr>
-                        <tr>
-                        <th>Emergency contact</th>
-                        <td>{employee.emergency_contact}</td>
-                        </tr>
-                      </tbody>
-                  </Table>
-                </Col>
+                
               </Row>
               </Card.Body>
 
@@ -202,8 +195,33 @@ function EmployeeDetailsPage() {
             <Tab eventKey="documents" title="Documents">
               No Documents Uploaded
             </Tab>
-            <Tab eventKey="contact" title="Contact" disabled>
-              Contact
+            <Tab eventKey="contact" title="Contact" >
+          
+                <Table>
+                      <tbody>
+                        <tr>
+                        <th>Place of Origin</th>
+                        <td>{employee.birth_place}</td>
+                        </tr>
+                        <tr>
+                        <th>Residence</th>
+                        <td>{employee.residence}</td>
+                        </tr>
+                        <tr>
+                        <th>Next of Kin Name</th>
+                        <td>{employee.kin_name}</td>
+                        </tr>
+                        <tr>
+                        <th>Next of Kin Contact</th>
+                        <td>{employee.kin_contact}</td>
+                        </tr>
+                        <tr>
+                        <th>Emergency contact</th>
+                        <td>{employee.emergency_contact}</td>
+                        </tr>
+                      </tbody>
+                  </Table>
+             
             </Tab>
           </Tabs>
               </Card.Body>
@@ -213,7 +231,7 @@ function EmployeeDetailsPage() {
           </Col>
         
         </Row>}
-        {showLeaveRequestForm && <LeaveForm employee={id} show={showLeaveRequestForm} onHide={() => setShowLeaveRequestForm(false)} />}
+        {showLeaveRequestForm && <LeaveForm employee={id} show={showLeaveRequestForm} onHide={() => setShowLeaveRequestForm(false)} onSuccess={onLeaveRequestSuccess} />}
         {showEmployeeEditForm && <EmployeeEditForm employeeId={id} show={showEmployeeEditForm} onHide={() => setShowEmployeeEditForm(false)} onSuccess={onEmployeeEditSuccess} />}
     </div>
   )

@@ -23,7 +23,6 @@ function EmployeeEditForm(props) {
         dob:"",
         kin_name:"",
         kin_contact: "",
-        photo:"",
         emergency_contact:"",
         comment:""
       });
@@ -57,7 +56,7 @@ function EmployeeEditForm(props) {
     event.preventDefault();
     console.log(formData)
     const items = await updateEmployeeById(employeeId, formData).then(response => {
-        props.onSuccess();
+        props.onSuccess("Record " + employeeId + " Updated successfully");
     }).catch(error => {
         console.log("An error occurred!")
     });
@@ -113,30 +112,21 @@ function EmployeeEditForm(props) {
                 >
                   <Form.Label>Gender</Form.Label>
                   <br/>
-                  <Form.Check
-                    inline
-                    label="Male"
-                    name="group1"
-                    type='radio'
-                    id={`inline-radio-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="Female"
-                    name="group1"
-                    type='radio'
-                    id={`inline-radio-1`}
-                  />
+                  <Form.Select aria-label="Default select gender" name="gender" value={formData.gender} onChange={(e) => handleChange(e)}>
+                      <option>--------</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </Form.Select>
                 </Form.Group>
               </Col>
 
               <Col md="6">
                 <Form.Group
                   className="mb-1"
-                  controlId="empForm.dob"
+                  controlId="empForm.date_of_birth"
                 >
                   <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control name="dob" type="date" placeholder="dob" value={formData.dob} onChange={(e) => handleChange(e)}/>
+                  <Form.Control name="date_of_birth" type="date" placeholder="dob" value={formData.date_of_birth} onChange={(e) => handleChange(e)}/>
                   
                 </Form.Group>
               </Col>
@@ -177,7 +167,7 @@ function EmployeeEditForm(props) {
                   controlId="empForm.department"
                 >
                   <Form.Label>Department</Form.Label>
-                  <Form.Select aria-label="Default select department" name="department_id" value={formData.department_id} onChange={(e) => handleChangeInteger(e)}>
+                  <Form.Select aria-label="Default select department" name="department_id" value={formData.department_id} onChange={(e) => handleChangeInteger(e)} required>
                       <option>--------</option>
                       {departments.map((item, i) => (
                           <option value={item.ID} key={i}>{item.name}</option>

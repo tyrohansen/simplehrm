@@ -25,7 +25,7 @@ func ConnectDb() {
 	}
 
 	log.Println("Connected Successfully to Database")
-	db.Logger = logger.Default.LogMode(logger.Info)
+	db.Logger = logger.Default.LogMode(logger.Error)
 	log.Println("Running Migrations")
 
 	db.AutoMigrate(&models.Department{}, &models.Employee{}, &models.LeaveRequest{}, &models.Document{})

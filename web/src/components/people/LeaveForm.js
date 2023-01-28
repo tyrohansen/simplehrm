@@ -31,7 +31,7 @@ function LeaveForm(props) {
         params.employee_id = parseInt(formData.employee_id)
         params.work_days = parseInt(formData.work_days)
         await createLeaveRequest(formData).then(response => {
-            props.onHide();
+            props.onSuccess();
         }).catch(error => {
             alert("An error Occurred!")
         })
