@@ -8,6 +8,8 @@ import LeaveForm from './LeaveForm';
 import PhotoForm from './PhotoForm';
 import EmployeeEditForm from './EmployeeEditForm';
 import AlertContext from '../widgets/alertPopup/AlertContext';
+import { fetchEmployeeDocuments } from '../../services/document-service';
+import DocumentForm from './DocumentForm';
 
 
 function EmployeeDetailsPage() {
@@ -15,14 +17,17 @@ function EmployeeDetailsPage() {
   let {setAlert} = useContext(AlertContext);
   const [employee, setEmployee] = useState({});
   const [leaveRequests, setLeaveRequests] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const [showLeaveRequestForm, setShowLeaveRequestForm] = useState(false);
   const [showPhotoEditForm, setShowPhotoEditForm] = useState(false);
   const [showEmployeeEditForm, setShowEmployeeEditForm] = useState(false);
+  const [showDocumentForm, setShowDocumentForm] = useState(false);
 
   useEffect(() => {
     getEmployeeDetails(id);
     
     getEmployeeLeaveRequests(id);
+    getEmployeeDocuments(id);
   },[id]);
 
   const getEmployeeDetails = async (id) => {
@@ -39,6 +44,12 @@ function EmployeeDetailsPage() {
       }).catch(error => {
         setAlert("An error Occurred!", "danger")
       })
+  }
+
+  const getEmployeeDocuments = async (id) => {
+    await fetchEmployeeDocuments(id).then(response => {
+      setDocuments(response.data)
+    })
   }
 
   const onPhotoChangeSuccess = () => {
@@ -58,6 +69,12 @@ function EmployeeDetailsPage() {
      getEmployeeLeaveRequests(id);
      setShowLeaveRequestForm(false);
      setAlert("Leave request recorded successfully")
+  }
+
+  const onDocumentUploadSuccess =(message) => {
+     getEmployeeDocuments(id);
+     setShowDocumentForm(false);
+     setAlert(message, "success");
   }
   return (
     <div><h3> Staff Profile</h3>
@@ -82,7 +99,7 @@ function EmployeeDetailsPage() {
               <Col md={8} className="offset-md-4 text-center">
                 <Button onClick={() => setShowEmployeeEditForm(true)}>Edit</Button>&nbsp;&nbsp;
                 <Button variant='success' onClick={() => setShowLeaveRequestForm(true)}>New Leave Request</Button>&nbsp;&nbsp;
-                <Button variant='success'>New Document</Button>&nbsp;&nbsp;
+                <Button variant='success' onClick={() => setShowDocumentForm(true)}>New Document</Button>&nbsp;&nbsp;
                 <Button variant='danger'>Delete</Button>&nbsp;&nbsp;
               </Col>
               <Col md={12}>
@@ -193,7 +210,30 @@ function EmployeeDetailsPage() {
                </Table>
             </Tab>
             <Tab eventKey="documents" title="Documents">
-              No Documents Uploaded
+            <Table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>File Name</th>
+                    <th>Category</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+               {documents && documents.map((item, i) => (
+                <tr key={`document-${i}`}>
+                <td>{i + 1}</td>
+                <td>{item.title.substring(0, 15)}</td>
+                <td>{item.filename}</td>
+                <td>{item.category}</td>
+                <td>{item.CreatedAt}</td>
+                <td>{item.UpdatedAt}</td>
+              </tr>
+               ))}
+               </tbody>
+               </Table>
             </Tab>
             <Tab eventKey="contact" title="Contact" >
           
@@ -233,6 +273,7 @@ function EmployeeDetailsPage() {
         </Row>}
         {showLeaveRequestForm && <LeaveForm employee={id} show={showLeaveRequestForm} onHide={() => setShowLeaveRequestForm(false)} onSuccess={onLeaveRequestSuccess} />}
         {showEmployeeEditForm && <EmployeeEditForm employeeId={id} show={showEmployeeEditForm} onHide={() => setShowEmployeeEditForm(false)} onSuccess={onEmployeeEditSuccess} />}
+        {showDocumentForm && <DocumentForm employeeId={id}  show={showDocumentForm} onHide={() => setShowDocumentForm(false)} onSuccess={onDocumentUploadSuccess} />}
     </div>
   )
 }

@@ -130,7 +130,7 @@ func HandleUploadEmployeePicture(c *fiber.Ctx) error {
 		return c.Status(404).JSON(Message{Detail: err.Error()})
 	}
 
-	c.SaveFile(file, fmt.Sprintf("./web/build/photos/%s", file.Filename))
+	c.SaveFile(file, fmt.Sprintf("./dashboard/photos/%s", file.Filename))
 	database.Database.Db.Model(&employee).Update("photo", file.Filename)
 
 	return c.Status(200).JSON(Message{Detail: "Successfully Uploaded photo"})

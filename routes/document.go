@@ -2,6 +2,7 @@ package routes
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/tyrohansen/simplehrm/database"
@@ -10,10 +11,11 @@ import (
 )
 
 type Document struct {
-	Title    string `json:"title"`
-	Filename string `json:"filename"`
-	Category string `json:"category"`
-	Notes    string `json:"notes"`
+	Title         string `json:"title"`
+	EmployeeRefer int    `json:"employee_id"`
+	Filename      string `json:"filename"`
+	Category      string `json:"category"`
+	Notes         string `json:"notes"`
 }
 
 func HandleCreateDocument(c *fiber.Ctx) error {
@@ -22,6 +24,13 @@ func HandleCreateDocument(c *fiber.Ctx) error {
 	if err := c.BodyParser(&document); err != nil {
 		return c.Status(400).JSON(Message{Detail: err.Error()})
 	}
+
+	file, err := c.FormFile("filename")
+	if err != nil {
+		return c.Status(422).JSON(Message{Detail: "We were not able upload your attachment"})
+	}
+	c.SaveFile(file, fmt.Sprintf("./dashboard/photos/%s", file.Filename))
+	document.Filename = file.Filename
 	database.Database.Db.Create(&document)
 	return c.Status(200).JSON(document)
 }

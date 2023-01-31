@@ -3,7 +3,6 @@ import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 import { createLeaveRequest } from '../../services/leave-service';
 
 function LeaveForm(props) {
-    const employee = props.employee;
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         employee_id: props.employee,
@@ -19,12 +18,10 @@ function LeaveForm(props) {
         setFormData({ ...formData, [event.target.name]: event.target.value });
       };
     
-      const handleDateChange = (event) => {
-        setFormData({ ...formData, [event.target.name]: Date.parse(event.target.value) });
-      };
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
+        setValidated(false);
         var params = formData;
         params.start_date = new Date(formData.start_date).toISOString()
         params.end_date = new Date(formData.end_date).toISOString()
