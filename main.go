@@ -58,7 +58,7 @@ func setupRoutes(app *fiber.App) {
 func main() {
 	database.ConnectDb()
 	app := fiber.New(fiber.Config{
-		Prefork:       true,
+		Prefork:       false,
 		CaseSensitive: true,
 		StrictRouting: true,
 		ServerHeader:  "Simple HRM",
