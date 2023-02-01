@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Table } from 'react-bootstrap';
 import { fetchLeaveRequests } from '../../services/leave-service';
+import AlertContext from '../widgets/alertPopup/AlertContext';
 
 function LeaveRequestPage() {
+  let {setAlert} = useContext(AlertContext)
   const [leaveRequests, setLeaveRequests] = useState([]);
   
   useEffect(() => {
@@ -13,7 +15,7 @@ function LeaveRequestPage() {
      await fetchLeaveRequests().then(response => {
         setLeaveRequests(response.data);
      }).catch(error => {
-        alert("An Error occurred! Please contact the administrator.")
+      setAlert("An Error occurred! Please contact the administrator.", "danger")
      })
   }
 
