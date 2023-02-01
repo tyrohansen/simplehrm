@@ -34,6 +34,7 @@ func setupRoutes(app *fiber.App) {
 	app.Put("/api/employees/:id", routes.HandleUpdateEmployee)
 	app.Delete("/api/employees/:id", routes.HandleDeleteEmployee)
 	app.Post("/api/employees/:id/photo", routes.HandleUploadEmployeePicture)
+	app.Get("/api/report/employees", routes.HandleEmployeeSummary)
 
 	// leave request routes
 	app.Get("/api/leave_requests/", routes.HandleGetLeaveRequests)
@@ -42,6 +43,7 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/api/leave_requests/:id", routes.HandleGetLeaveRequestDetails)
 	app.Put("/api/leave_requests/:id", routes.HandleUpdateLeaveRequest)
 	app.Delete("/api/leave_requests/:id", routes.HandleDeleteLeaveRequest)
+	app.Get("/api/report/leave_requests", routes.HandleLeaveRequestSummary)
 
 	// handle document routes
 
@@ -71,7 +73,7 @@ func main() {
 	}))
 	app.Use(cors.New())
 	setupRoutes(app)
-	openbrowser("http://localhost:18000/")
+	//openbrowser("http://localhost:18000/")
 	log.Fatal(app.Listen(":18000"))
 
 }

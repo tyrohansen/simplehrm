@@ -30,3 +30,8 @@ export async function deleteEmployeeById(id) {
     const response = await axiosAPI.delete(`employees/${id}/`);
     return response;
 }
+
+export async function fetchEmployeeSummaryReport() {
+  const response = await axiosAPI.get(`report/employees`);
+  return response;
+}

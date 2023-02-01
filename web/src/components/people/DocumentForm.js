@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { createDocument } from '../../services/document-service';
 
 

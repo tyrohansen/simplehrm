@@ -32,6 +32,24 @@ type Employee struct {
 	Comment         string `json:"comment" gorm:"type:text"`
 }
 
+type GenderSummary struct {
+	Total  int    `json:"total"`
+	Gender string `json:"gender"`
+}
+
+type EmployeeSummary struct {
+	Total         int64 `json:"total"`
+	GenderSummary []GenderSummary
+}
+
+func HandleEmployeeSummary(c *fiber.Ctx) error {
+	result := []GenderSummary{}
+	var count int64
+	database.Database.Db.Model(&models.Employee{}).Select("gender, count(*) as total").Group("gender").Find(&result)
+	database.Database.Db.Model(&models.Employee{}).Count(&count)
+	return c.Status(200).JSON(EmployeeSummary{GenderSummary: result, Total: count})
+}
+
 func HandleCreateEmployee(c *fiber.Ctx) error {
 	var employee models.Employee
 

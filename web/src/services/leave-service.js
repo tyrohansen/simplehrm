@@ -24,3 +24,8 @@ export async function deleteLeaveRequestById(id) {
     const response = await axiosAPI.delete(`leave_requests/${id}/`);
     return response;
   }
+
+  export async function fetchLeaveSummaryReport() {
+    const response = await axiosAPI.get(`report/leave_requests`);
+    return response;
+  }

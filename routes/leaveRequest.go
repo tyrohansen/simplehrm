@@ -20,6 +20,16 @@ type LeaveRequest struct {
 	Comment       string    `json:"comment"`
 }
 
+type CategorySummary struct {
+	Total  int    `json:"count"`
+	Reason string `json:"reason"`
+}
+
+type LeaveSummary struct {
+	Total           int64 `json:"total"`
+	CategorySummary []CategorySummary
+}
+
 func HandleCreateLeaveRequest(c *fiber.Ctx) error {
 	var request models.LeaveRequest
 
@@ -34,6 +44,14 @@ func HandleGetLeaveRequests(c *fiber.Ctx) error {
 	items := []models.LeaveRequest{}
 	database.Database.Db.Preload("Employee").Order("enddate desc").Find(&items)
 	return c.Status(200).JSON(items)
+}
+
+func HandleLeaveRequestSummary(c *fiber.Ctx) error {
+	result := []CategorySummary{}
+	var count int64
+	database.Database.Db.Model(&models.LeaveRequest{}).Select("reason, count(*) as total").Group("reason").Find(&result)
+	database.Database.Db.Model(&models.LeaveRequest{}).Count(&count)
+	return c.Status(200).JSON(LeaveSummary{CategorySummary: result, Total: count})
 }
 
 func HandleGetEmployeeLeaveRequests(c *fiber.Ctx) error {
