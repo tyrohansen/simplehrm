@@ -42,4 +42,4 @@ This is an Employee Management web-based Application built using GoFiber and Rea
 If you'd like to contribute to this project, please create a pull request with your changes.
 
 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/). See the LICENSE file for details.
